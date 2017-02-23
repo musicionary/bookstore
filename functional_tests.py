@@ -18,7 +18,7 @@ class NewVisitorTest(unittest.TestCase):
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('BookCase', header_text)
 
-        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox = self.browser.find_element_by_id('id_new_shelf')
         # Add a bookshelf "Want To Read"
         self.assertEqual(inputbox.get_attribute('placeholder'), 'Build a bookshelf')
         # User types "Want To Read" into a text box
@@ -29,8 +29,8 @@ class NewVisitorTest(unittest.TestCase):
         time.sleep(1)
 
         grid = self.browser.find_element_by_id('id_bookshelf_grid')
-        rows = table.find_elements_by_tag_name('h2')
-        self.assertTrue(any(row.text == 'Want To Read' for row in rows))
+        rows = grid.find_elements_by_tag_name('h2')
+        self.assertTrue(any(row.text == 'Want To Read' for row in rows), "New bookshelf did not appear in the grid")
         self.fail('Finish the test!')
 
 
