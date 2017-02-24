@@ -13,9 +13,11 @@
     </form>
     <div class="container" id="id_bookshelf_grid">
       <div class="row">
-        <div class="col-sm-4">
-          <h2>{{ new_bookshelf_text }}</h2>
-        </div>
+        {% for bookshelf in bookshelves %}
+          <div class="col-sm-4">
+            <h2>{{ bookshelf.name }}</h2>
+          </div>
+        {% endfor %}
       </div>
     </div>
   </body>

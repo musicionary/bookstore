@@ -1,8 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
+from bookshelves.models import Bookshelf
 
 
 def home_page(request):
-    return render(request, 'home.html', {
-        'new_bookshelf_text': request.POST.get('bookshelf_text', ''),
-    })
+    if request.method == 'POST':
+        Bookshelf.objects.create(name=request.POST['bookshelf_text'])
+        return redirect('/')
+
+    bookshelves = Bookshelf.objects.all()
+    return render(request, 'home.html', {'bookshelves': bookshelves})

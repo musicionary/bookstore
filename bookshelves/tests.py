@@ -5,18 +5,41 @@ from django.template.loader import render_to_string
 from bookshelves.views import home_page
 from bookshelves.models import Bookshelf
 
+
 class HomePageTest(TestCase):
+
+    def test_only_saves_items_when_needed(self):
+        self.client.get('/')
+        self.assertEqual(Bookshelf.objects.count(), 0)
 
     def test_uses_home_template(self):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'home.html')
 
     def test_can_save_a_POST_request(self):
-        response = self.client.post('/',
-            data={'bookshelf_text': "A new bookshelf"}
+        response = self.client.post('/', data={
+                'bookshelf_text': "A new bookshelf"
+            }
         )
-        self.assertIn("A new bookshelf", response.content.decode())
-        self.assertTemplateUsed(response, 'home.html')
+        self.assertEqual(Bookshelf.objects.count(), 1)
+        new_item = Bookshelf.objects.first()
+        self.assertEqual(new_item.name, 'A new bookshelf')
+
+    def test_redirect_after_POST(self):
+        response = self.client.post('/', data={
+                'bookshelf_text': "A new bookshelf"
+            }
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/')
+
+    def test_display_all_bookshelves(self):
+        Bookshelf.objects.create(name="Want To Read")
+        Bookshelf.objects.create(name="Need To Read")
+        response= self.client.get('/')
+        self.assertIn('Want To Read', response.content.decode())
+        self.assertIn('Need To Read', response.content.decode())
+
 
 
 class BookshelfModelTest(TestCase):
