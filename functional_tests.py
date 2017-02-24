@@ -30,7 +30,7 @@ class NewVisitorTest(unittest.TestCase):
 
         grid = self.browser.find_element_by_id('id_bookshelf_grid')
         rows = grid.find_elements_by_tag_name('h2')
-        self.assertTrue(any(row.text == 'Want To Read' for row in rows), "New bookshelf did not appear in the grid")
+        self.assertIn('Want To Read', [row.text for row in rows])
         self.fail('Finish the test!')
 
 

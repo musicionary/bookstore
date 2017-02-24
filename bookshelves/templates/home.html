@@ -3,12 +3,20 @@
   <head>
     <meta charset="utf-8">
     <title>BookCase</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   </head>
   <body>
     <h1>BookCase</h1>
-    <input id="id_new_shelf" placeholder="Build a bookshelf">
+    <form method="post">
+      {% csrf_token %}
+      <input name="bookshelf_text" id="id_new_shelf" placeholder="Build a bookshelf">
+    </form>
     <div class="container" id="id_bookshelf_grid">
-
+      <div class="row">
+        <div class="col-sm-4">
+          <h2>{{ new_bookshelf_text }}</h2>
+        </div>
+      </div>
     </div>
   </body>
 </html>
