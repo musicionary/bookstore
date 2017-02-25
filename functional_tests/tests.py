@@ -58,7 +58,41 @@ class NewVisitorTest(LiveServerTestCase):
         self.fail('Finish the test!')
 
         # User wonders if site will remember the list.
-        # She sees the site has a unique URL for her --
-        # there is some explanatory text to that effect.
 
+    def test_multiple_users_can_start_lists_at_different_urls(self):
+        self.browser.get(self.live_server_url)
+        inputbox = self.browser.find_element_by_id('id_new_shelf')
+        inputbox.send_keys('Want To Read')
+        inputbox.send_keys(Keys.ENTER)
+        self.check_for_row_in_grid('Want To Read')
+        # She sees the site has a unique URL for her --
+        user_bookshelf_url = self.browser.current_url
+        self.assertRegex(user_bookshelf_url, '/bookshelves/.+')
+
+        #start process with new user
+        self.browser.quit()
+        self.browser = webdriver.Firefox()
+
+        # Francis visits the home page.  There is no sign of Edith's
+        # list
+        self.browser.get(self.live_server_url)
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertNotIn('Want To Read', page_text)
+
+        # Francis starts a new list by entering a new item. He
+        # is less interesting than Edith...
+        inputbox = self.browser.find_element_by_id('id_new_shelf')
+        inputbox.send_keys('Buy milk')
+        inputbox.send_keys(Keys.ENTER)
+        self.wait_for_row_in_list_table('Buy milk')
+
+        # Francis gets his own unique URL
+        francis_list_url = self.browser.current_url
+        self.assertRegex(francis_list_url, '/bookshelves/.+')
+        self.assertNotEqual(francis_list_url, user_list_url)
+
+        # Again, there is no trace of Edith's list
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertNotIn('Buy peacock feathers', page_text)
+        self.assertIn('Buy milk', page_text)
         # Visit the url - the book shelf is still there.
