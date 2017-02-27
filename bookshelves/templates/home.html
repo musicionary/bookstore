@@ -1,17 +1,23 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>BookCase</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  </head>
-  <body>
-    <h1>BookCase</h1>
-    <form method="post" action='/bookshelves/new'>
-      {% csrf_token %}
-      <input name="bookshelf_text" id="id_new_shelf" placeholder="Build a bookshelf">
-    </form>
-    <div class="container" id="id_bookshelf_grid">
+{% extends 'layout.html' %}
+
+{% block title %}BookCase - An App For Your Book Wish Lists {% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-10 col-sm-offset-1 jumbotron">
+        <h1 class="text-center">BookCase</h1>
+        <div class="row">
+          <div class="col-sm-6 col-sm-offset-3">
+            <form method="post" action='/bookshelves/new' class="text-center">
+              {% csrf_token %}
+              <input class="form-control input-lg" name="bookshelf_text" id="id_new_shelf" placeholder="Build a bookshelf">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="id_bookshelf_grid">
       <div class="row">
         {% for bookshelf in bookshelves %}
           <div class="col-sm-4">
@@ -20,5 +26,5 @@
         {% endfor %}
       </div>
     </div>
-  </body>
-</html>
+  </div>
+{% endblock %}
