@@ -23,9 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '7rp(fejm0$)(oiy45+940m-e1=lo1=wz#1ls#i5wihw@6f$k9m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+TEMPLATE_DEBUG = DEBUG
+
+
+ALLOWED_HOSTS = ['djangobookcase.science']
 
 
 # Application definition
